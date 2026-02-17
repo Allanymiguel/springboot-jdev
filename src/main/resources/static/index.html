@@ -131,9 +131,10 @@
 										+ '</td><td>'
 										+ response[i].idade
 										+ '</td><td>'
-										+ '<button type="button" class="btn btn-info">Ver</button>'
+										+ '<button type="button" class="btn btn-info"' 
+										+ ' onclick="colocarEmEdicao(' + response[i].id + ')">Ver</button>'
 										+ '</td></tr>');
-								}
+								} // adiciona na tabela.
 
 							}
 						}).fail(function(xhr, status, errorThrown) {
@@ -142,9 +143,27 @@
 
 			}
 		}
-	</script>
+
 		
-	<script>
+		function colocarEmEdicao(id){
+			
+			$.ajax({
+				method : "GET",
+				url : "buscaruserid",
+				data : "idUser=" + id,
+				success : function(response) {
+					$("#id").val(response.id);
+					$("#nome").val(response.nome);
+					$("#idade").val(response.idade);
+					
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar id do usuario: " + xhr.responseText);
+			});
+			
+		}
+		
+		
 
 		function salvarUsuario() {
 

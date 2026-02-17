@@ -58,10 +58,10 @@
 				</div>
 
 				<div class="modal-body">
-					<form>
-						<div class="mb-3">
-							<label for="buscaNome" class="col-form-label">Informe o
-								nome:</label> <input type="text" class="form-control" id="buscaNome">
+					<form onsubmit="buscarUsuario(); return false;">
+    						<div class="mb-3">
+        						<label for="buscaNome" class="col-form-label">Informe o nome:</label>
+        						<input type="text" class="form-control" id="buscaNome">
 						</div>
 					</form>
 
@@ -72,6 +72,7 @@
 								<th scope="col">Nome</th>
 								<th scope="col">Idade</th>
 								<th scope="col">Editar</th>
+								<th scope="col">Deletar</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -124,7 +125,7 @@
 
 								for (var i = 0; i < response.length; i++) {
 									$('#tabelaResultados > tbody').append(
-										'<tr><td>'
+										'<tr id=" '+ response[i].id +'"><td>'
 										+ response[i].id
 										+ '</td><td>'
 										+ response[i].nome
@@ -133,6 +134,9 @@
 										+ '</td><td>'
 										+ '<button type="button" class="btn btn-info"' 
 										+ ' onclick="colocarEmEdicao(' + response[i].id + ')">Ver</button>'
+										+ '</td><td>'
+										+ '<button type="button" class="btn btn-danger"'
+										+ ' onclick="deletarUsuario(' + response[i].id +')">Deletar</button>'
 										+ '</td></tr>');
 								} // adiciona na tabela.
 
@@ -165,7 +169,27 @@
 			
 		}
 		
-		
+		function deletarUsuario(id){
+			
+			if(confirm('Deseja realmente deletar?')) {
+				
+				$.ajax({
+					method : "DELETE",
+					url : "deletar",
+					data : "idUser=" + id,
+					success : function(response) {
+						
+						if($('#' + id).remove()){
+							alert("Usuario deletado com sucesso!");
+						}
+					}
+				}).fail(function(xhr, status, errorThrown) {
+					alert("Erro ao deletar usuario: " + xhr.responseText);
+				});
+			
+			}
+			
+		}
 
 		function salvarUsuario() {
 

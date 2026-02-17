@@ -89,7 +89,7 @@ public class GreetingsController {
 
 	@DeleteMapping(value = "deletar")
 	@ResponseBody
-	public ResponseEntity<String> salvar(@RequestParam Long idUser) {
+	public ResponseEntity<String> deletar(@RequestParam(name = "idUser") Long idUser) {
 
 		usuarioRepository.deleteById(idUser);
 

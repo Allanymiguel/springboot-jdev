@@ -63,8 +63,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.SEU_USUARIOql</groupId>
-			<artifactId>SEU_USUARIOql</artifactId>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -37,12 +37,13 @@
 		</div>
 
 	</form>
+	
 
 	<button type="button" class="btn btn-primary" onclick="salvarUsuario()">Salvar</button>
 	<button type="button" class="btn btn-secondary"
 		onclick="document.getElementById('formCadastroUser').reset();">Novo</button>
 	<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-		data-bs-target="#modalPesquisarUser">Pesquisar</button>
+		data-bs-target="#modalPesquisarUser" onclick="limparCampoBusca()">Pesquisar</button>
 
 
 
@@ -93,8 +94,7 @@
 		</div>
 	</div>
 
-
-
+	<!-- JQuery -->
 	<script src="https://code.jquery.com/jquery-4.0.0.min.js"
 		integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao="
 		crossorigin="anonymous">
@@ -110,40 +110,45 @@
 	</script>
 
 	<script type="text/javascript">
+	
+		function limparCampoBusca(){
+			$('#buscaNome') = '';
+		}
+	
 		function buscarUsuario() {
 
 			var nome = $('#buscaNome').val();
 
 			if (nome != null && nome.trim() != '') {
 
-						$.ajax({
-							method : "GET",
-							url : "buscarpornome",
-							data : "name=" + nome,
-							success : function(response) {
-								$('#tabelaResultados > tbody > tr').remove();
+				$.ajax({
+					method : "GET",
+					url : "buscarpornome",
+					data : "name=" + nome,
+					success : function(response) {
+						$('#tabelaResultados > tbody > tr').remove();
 
-								for (var i = 0; i < response.length; i++) {
-									$('#tabelaResultados > tbody').append(
-										'<tr id=" '+ response[i].id +'"><td>'
-										+ response[i].id
-										+ '</td><td>'
-										+ response[i].nome
-										+ '</td><td>'
-										+ response[i].idade
-										+ '</td><td>'
-										+ '<button type="button" class="btn btn-info"' 
-										+ ' onclick="colocarEmEdicao(' + response[i].id + ')">Ver</button>'
-										+ '</td><td>'
-										+ '<button type="button" class="btn btn-danger"'
-										+ ' onclick="deletarUsuario(' + response[i].id +')">Deletar</button>'
-										+ '</td></tr>');
-								} // adiciona na tabela.
+						for (var i = 0; i < response.length; i++) {
+							$('#tabelaResultados > tbody').append(
+								'<tr id=" '+ response[i].id +'"><td>'
+								+ response[i].id
+								+ '</td><td>'
+								+ response[i].nome
+								+ '</td><td>'
+								+ response[i].idade
+								+ '</td><td>'
+								+ '<button type="button" class="btn btn-info"' 
+								+ ' onclick="colocarEmEdicao(' + response[i].id + ')">Ver</button>'
+								+ '</td><td>'
+								+ '<button type="button" class="btn btn-danger"'
+								+ ' onclick="deletarUsuario(' + response[i].id +')">Deletar</button>'
+								+ '</td></tr>');
+						} // adiciona na tabela.
 
-							}
-						}).fail(function(xhr, status, errorThrown) {
-							alert("Erro ao buscar: " + xhr.responseText);
-						});
+					}
+				}).fail(function(xhr, status, errorThrown) {
+					alert("Erro ao buscar: " + xhr.responseText);
+				});
 
 			}
 		}
@@ -172,16 +177,14 @@
 		function deletarUsuario(id){
 			
 			if(confirm('Deseja realmente deletar?')) {
-				
 				$.ajax({
 					method : "DELETE",
 					url : "deletar",
 					data : "idUser=" + id,
 					success : function(response) {
 						
-						if($('#' + id).remove()){
-							alert("Usuario deletado com sucesso!");
-						}
+						alert("Usuario deletado com sucesso!");
+						buscarUsuario();
 					}
 				}).fail(function(xhr, status, errorThrown) {
 					alert("Erro ao deletar usuario: " + xhr.responseText);
